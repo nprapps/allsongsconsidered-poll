@@ -45,9 +45,8 @@ def find_oddities(row, idx, album_list):
     previousrow = album_list[idx]
     delta = row["Timestamp"] - previousrow["Timestamp"]
 
-    while row['smelly'] is False and delta.seconds < DUPLICATE_TIME_THRESHOLD:
-        dupe = find_dupe(row, previousrow)
-        row['smelly'] = dupe
+    while row['smelly'] is False and delta.seconds < DUPLICATE_TIME_THRESHOLD and delta.seconds > 0:
+        row['smelly'] = find_dupe(row, previousrow)
         idx = idx - 1
         previousrow = album_list[idx]
         delta = row["Timestamp"] - previousrow["Timestamp"]
