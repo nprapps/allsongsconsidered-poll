@@ -9,7 +9,9 @@ All Songs Considered - EOY Best Album Poll
 What is this?
 -------------
 
-A repository for cleaning, processing and ranking the form responses of the All Songs Considered End of Year Best Album Poll.
+A repository for cleaning, processing and ranking the form responses of the All Songs Considered End of Year Best Album Poll. This code is based off of the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html#step-3-weight-and-rank-with-an-r-script).
+
+This codebase is licensed under the MIT open source license. See the [LICENSE](https://github.com/nprapps/allsongsconsidered-poll/blob/master/LICENSE) file for the complete license.
 
 Assumptions
 -----------
