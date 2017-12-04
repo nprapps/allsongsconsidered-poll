@@ -1,2 +1,5 @@
 .DS_store
 .gzip
+scripts/training.json
+scripts/learned_settings
+output
