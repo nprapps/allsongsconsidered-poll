@@ -1,3 +1,4 @@
+csvdedupe==0.1.15
 jupyter==1.0.0
 matplotlib==2.0.0
 pandas==0.19.2
