@@ -30,12 +30,20 @@ def run():
             reader = csv.reader(fi)
             reader.next()
             for idx, row in enumerate(reader):
+                cache = {}
                 if row[0] != '':
                     timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
                     for i in range(5):
                         ranking = 5 - i
                         album = row[2*i + 1]
                         artist = row[2*i + 2]
+                        key = '-'.join([album,artist])
+                        try:
+                            cache[key]
+                            continue
+                        except KeyError:
+                            cache[key] = 1
+
                         if album.strip() != '':
                             rows.append([
                                 idx,
