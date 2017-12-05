@@ -12,7 +12,8 @@ def checkAccuracy(x, y):
 
 # Import csvs
 df_nprmusic = pd.read_csv('../data/nprmusic_top200.csv')
-df_deduped = pd.read_csv('../output/2017_responses_deduped.csv',dtype = {'Cluster ID':str,'id':str,'day':str,'ranking':str})
+df_deduped = pd.read_csv('../output/2017_responses_deduped.csv',dtype = {'Cluster ID':str,'id':np.int64,'day':str,'ranking':str})
+print(df_deduped)
 
 # group deduped csv by cluster id and drop excess rows
 cluster_groups = df_deduped.groupby(['Cluster ID','album','artist']).count().reset_index()
