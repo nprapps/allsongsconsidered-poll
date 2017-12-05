@@ -5,3 +5,4 @@ scripts/learned_settings
 output
 data/*.csv
 2016/*.csv
+jupyter
