@@ -29,9 +29,11 @@ checked = merged[merged['checked'] == True].drop_duplicates(subset=['album','art
 # drop checked column
 checked = checked.drop(['checked'],axis=1)
 
-# export merged dataframe to csv
-temp = pd.merge(df_deduped, checked, how='outer', on='Cluster ID').sort_values('id')
-temp['album'] = np.vectorize(checkAccuracy)(temp['album_x'],temp['album_y'])
-temp['artist'] = np.vectorize(checkAccuracy)(temp['artist_x'],temp['artist_y'])
+# merge dedupe and checked dfs on cluster id
+deduped_clusters = pd.merge(df_deduped, checked, how='outer', on='Cluster ID').sort_values('id')
+deduped_clusters['album'] = np.vectorize(checkAccuracy)(deduped_clusters['album_x'],deduped_clusters['album_y'])
+deduped_clusters['artist'] = np.vectorize(checkAccuracy)(deduped_clusters['artist_x'],deduped_clusters['artist_y'])
 
-export = temp.drop(['album_x','artist_x','album_y','artist_y'],axis=1).to_csv('../output/2017_responses_clustered.csv',index=False)
+# drop extra album/artist columns and rows with more then 3 nan
+export = deduped_clusters.drop(['album_x','artist_x','album_y','artist_y'],axis=1).dropna(thresh=3)
+export.to_csv('../output/2017_responses_clustered.csv',index=False)
