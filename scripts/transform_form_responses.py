@@ -8,16 +8,9 @@ import arrow
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../data')
-INPUT_FILE = '2017_12_5_responses'
+INPUT_FILE = '2017_responses'
 OUTPUT_PATH = os.path.join(cwd, '../output')
 HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'ranking']
-CSV_INDEX_MAP = {
-    5: [1, 2],
-    4: [3, 4],
-    3: [5, 6],
-    2: [7, 8],
-    1: [9, 10],
-}
 
 
 def run():
