@@ -8,15 +8,15 @@ import arrow
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../data')
-INPUT_FILE = '2016_responses'
+INPUT_FILE = '2017_12_5_responses'
 OUTPUT_PATH = os.path.join(cwd, '../output')
-HEADER = ['id', 'timestamp', 'day', 'album_artist', 'ranking']
+HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'ranking']
 CSV_INDEX_MAP = {
-    1: 5,
-    2: 4,
-    3: 3,
-    4: 2,
-    5: 1,
+    5: [1, 2],
+    4: [3, 4],
+    3: [5, 6],
+    2: [7, 8],
+    1: [9, 10],
 }
 
 
@@ -37,11 +37,21 @@ def run():
             reader = csv.reader(fi)
             reader.next()
             for idx, row in enumerate(reader):
-                timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
-                for k, v in CSV_INDEX_MAP.iteritems():
-                    print type(row[k])
-                    if row[k].strip() != '':
-                        rows.append([idx+1, timestamp, timestamp.day, row[k].decode('utf-8').encode('ascii', 'ignore'), v])
+                if row[0] != '':
+                    timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
+                    for i in range(5):
+                        ranking = 5 - i
+                        album = row[2*i + 1]
+                        artist = row[2*i + 2]
+                        if album.strip() != '':
+                            rows.append([
+                                idx,
+                                timestamp,
+                                timestamp.day,
+                                album.decode('utf-8').encode('ascii', 'ignore'),
+                                artist.decode('utf-8').encode('ascii', 'ignore'),
+                                ranking
+                            ])
             writer.writerows(rows)
 
 

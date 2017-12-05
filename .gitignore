@@ -3,3 +3,4 @@
 scripts/training.json
 scripts/learned_settings
 output
+data/*.csv
