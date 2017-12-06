@@ -32,4 +32,7 @@ Steps
 -----
 
 1. Download original form responses
-2. Combine like entries using csvdedupe
+2. Check for duplicate entries (2017_responses > clean_ballot_stuffing.py > 2017_responses_clean)
+3. Combine like entries using csvdedupe (2017_responses_clean > transform_form_responses.py > 2017_responses_normalized)
+<!-- 4. Standardize responses (standardize_responses.py) -->
+<!-- 5.  -->
