@@ -31,8 +31,9 @@ pip install -r requirements.txt
 Steps
 -----
 
-1. Download original form responses
-2. Check for duplicate entries (2017_responses > clean_ballot_stuffing.py > 2017_responses_clean)
-3. Combine like entries using csvdedupe (2017_responses_clean > transform_form_responses.py > 2017_responses_normalized)
+1. Download original form responses into `data/2017_responses.csv`
+2. Check for duplicate entries (2017_responses.csv > clean_ballot_stuffing.py > 2017_responses_clean.csv)
+3. Transform the csv into a vertical format and remove repeated albums and artists inside the same form response (2017_responses_clean.csv > transform_form_responses.py > 2017_responses_normalized.csv)
+4. Combine like entries using csvdedupe (2017_responses_normalized.csv > dedupe.sh > 2017_responses_deduped.csv)
 <!-- 4. Standardize responses (standardize_responses.py) -->
 <!-- 5.  -->

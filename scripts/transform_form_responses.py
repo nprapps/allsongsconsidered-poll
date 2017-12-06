@@ -7,8 +7,7 @@ import arrow
 
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
-INPUT_PATH = os.path.join(cwd, '../data')
-INPUT_FILE = '2017_responses'
+INPUT_PATH = os.path.join(cwd, '../output')
 OUTPUT_PATH = os.path.join(cwd, '../output')
 HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'ranking']
 
@@ -23,21 +22,22 @@ def run():
         os.makedirs(OUTPUT_PATH)
 
     rows = []
-    with open('%s/%s_normalized.csv' % (OUTPUT_PATH, INPUT_FILE), 'w') as fo:
+    with open('%s/2017_responses_normalized.csv' % (OUTPUT_PATH), 'w') as fo:
         writer = csv.writer(fo)
         writer.writerow(HEADER)
-        with open('%s/%s.csv' % (INPUT_PATH, INPUT_FILE)) as fi:
+        with open('%s/2017_responses_clean.csv' % (INPUT_PATH)) as fi:
             reader = csv.reader(fi)
             reader.next()
             for idx, row in enumerate(reader):
+                # Use a small cache to remove duplicate album-artist entries within a form response
                 cache = {}
                 if row[0] != '':
                     timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
                     for i in range(5):
                         ranking = 5 - i
-                        album = row[2*i + 1]
-                        artist = row[2*i + 2]
-                        key = '-'.join([album,artist])
+                        album = row[2*i + 1].strip()
+                        artist = row[2*i + 2].strip()
+                        key = '-'.join([album, artist])
                         try:
                             cache[key]
                             continue

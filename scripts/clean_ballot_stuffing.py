@@ -1,63 +1,80 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import pandas as pd
+import csv
+import os
 import arrow
 
+# GLOBAL SETTINGS
+cwd = os.path.dirname(__file__)
+INPUT_PATH = os.path.join(cwd, '../data')
+INPUT_FILE = '2017_responses'
+OUTPUT_PATH = os.path.join(cwd, '../output')
 DUPLICATE_TIME_THRESHOLD = 60 * 60
 
-def find_dupe(row, previousrow):
+DUPE_DICT_KEYS = ['Album Title #1', 'Album Title #2', 'Album Title #3',
+                  'Album Title #4', 'Album Title #5',
+                  'Artist #1', 'Artist #2 ', 'Artist #3',
+                  'Artist #4', 'Artist #5']
+
+
+def find_dupe(row1, row2):
     """
-        Check if pair of rows are identical
+    Check if pair of rows are identical in a given set of columns
     """
 
-    row['Timestamp'] = ''
-    previousrow['Timestamp'] = ''
-
-    for col in row:
-        if row[col] != previousrow[col]:
+    # Do all row values match? If not, not a dupe
+    for key in DUPE_DICT_KEYS:
+        if row1[key].strip() != row2[key].strip():
             return False
-
     return True
 
-def find_oddities(row, idx, album_list):
+
+def mark_ballot_stuffing_delta(row, i, rows):
     """
-        Search backwards to see if current row if a dupe of something that came before
+    Modifies the list elements in place adding a smelly attribute to each row
+    dictionary that is equal to the searched row within a timedelta
     """
-    row['smelly'] = False
+    timestamp = arrow.get(row['Timestamp'], 'M/D/YYYY H:m:s')
+    while i < (len(rows)-1):
+        i += 1
+        next_row = rows[i]
+        next_timestamp = arrow.get(next_row['Timestamp'], 'M/D/YYYY H:m:s')
+        timedelta = next_timestamp - timestamp
+        if timedelta.total_seconds() < DUPLICATE_TIME_THRESHOLD:
+            if find_dupe(row, next_row):
+                next_row['smelly'] = True
+        else:
+            break
 
-    # Check for dupes in previous time window
-    previousrow = album_list[idx]
-    delta = row['Timestamp'] - previousrow['Timestamp']
 
-    # while difference in seconds is less than 3600
-    # while delta.seconds < DUPLICATE_TIME_THRESHOLD and delta.seconds > 0:
-        # row['smelly'] = find_dupe(row, previousrow)
-        # print(idx)
-        # idx = idx - 1
-        # previousrow = album_list[idx]
-        # delta = row['Timestamp'] - previousrow['Timestamp']
+def run():
+    """
+    Parse allsongsconsidered form results and remove duplicate entries
+    within a time window defined in DUPLICATE_TIME_THRESHOLD
+    """
 
-def process():
-    # import data
-    albums = pd.read_csv("../data/2017_responses.csv")
+    # Create output files folder if needed
+    if not os.path.exists(OUTPUT_PATH):
+        os.makedirs(OUTPUT_PATH)
 
-    # Turn dataframe into list for easier handling of oddity detection?
-    album_list = albums.to_dict('records')
+    rows = []
+    with open('%s/%s.csv' % (INPUT_PATH, INPUT_FILE)) as fi:
+        reader = csv.DictReader(fi)
+        with open('%s/%s_clean.csv' % (OUTPUT_PATH, INPUT_FILE), 'w') as fo:
+            writer = csv.DictWriter(fo, fieldnames=reader.fieldnames)
+            writer.writeheader()
+            rows = list(reader)
+            rows = rows[1:]
+            for idx, row in enumerate(rows):
+                # First of all mark next rows that are identical within time window
+                mark_ballot_stuffing_delta(row, idx, rows)
+                # if this row has been marked as smelly ignore in output otherwise write
+                # to output file
+                try:
+                    row['smelly']
+                except KeyError:
+                    writer.writerow(row)
 
-    # format arrow with timestamp
-    for row in album_list:
-        row['Timestamp'] = arrow.get(row["Timestamp"], 'M/D/YYYY H:m:s')
-
-    # handle oddity detection
-    for idx, row in enumerate(album_list):
-        find_oddities(row, idx - 1, album_list)
-
-    # Cast back to dataframe
-    albums = pd.DataFrame(album_list)
-
-    # Weed out rows with smells
-    export = albums[albums['smelly'] == False]
-    export.to_csv('../output/2017_responses_clean.csv')
 
 if __name__ == '__main__':
-    process()
+    run()
