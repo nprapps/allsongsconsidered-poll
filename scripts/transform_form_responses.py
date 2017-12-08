@@ -9,7 +9,7 @@ import arrow
 cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../output')
 OUTPUT_PATH = os.path.join(cwd, '../output')
-HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'ranking']
+HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'points']
 
 
 def run():
@@ -35,8 +35,8 @@ def run():
                     timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
                     for i in range(5):
                         ranking = 5 - i
-                        album = row[2*i + 1].strip()
-                        artist = row[2*i + 2].strip()
+                        album = row[2*i + 1].strip().lower()
+                        artist = row[2*i + 2].strip().lower()
                         key = '-'.join([album, artist])
                         try:
                             cache[key]
@@ -44,7 +44,8 @@ def run():
                         except KeyError:
                             cache[key] = 1
 
-                        if album.strip() != '':
+                        # Remove empty albums & test data prior to poll starting day
+                        if album.strip() != '' and timestamp.day >= 4:
                             rows.append([
                                 idx,
                                 timestamp,
