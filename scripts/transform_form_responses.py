@@ -35,9 +35,9 @@ def run():
                     timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
                     for i in range(5):
                         ranking = 5 - i
-                        album = row[2*i + 1].strip().lower()
-                        artist = row[2*i + 2].strip().lower()
-                        key = '-'.join([album, artist])
+                        album = row[2*i + 1]
+                        artist = row[2*i + 2]
+                        key = '-'.join([album.strip().lower(), artist.strip().lower()])
                         try:
                             cache[key]
                             continue
