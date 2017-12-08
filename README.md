@@ -50,7 +50,7 @@ python transform_form_responses.py
 
 ```
 cs scripts
-./csvdedupe.sh
+./dedupe.sh
 ```
 
 _note: more info on csvdedupe [here](https://github.com/dedupeio/csvdedupe), the training.json file is available inside the scripts folder_
