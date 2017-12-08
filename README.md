@@ -41,4 +41,4 @@ Steps
 7. Rank them based on points per day favoring consistent numbers across the poll period. pick the top100 (2017_responses_deduped_standard.csv > ranker.py > 2017_responses_top100.csv)
 
 
-[screenshot]: 'assets/OpenRefine_validation.png'
+[screenshot]: assets/OpenRefine_validation.png
