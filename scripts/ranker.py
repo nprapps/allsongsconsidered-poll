@@ -25,13 +25,17 @@ def rank_entries():
     # Add a rank column per day in descending order as an integer
     grouped['rank'] = grouped.groupby(["day"])["points"].rank(
         method='dense', ascending=False).astype(int)
+
+    # Find maximum rank value and increase by one to use as a fill_value
+    # on the pivot with cluster by day
+    notfound_value = grouped['rank'].max()+1
     grouped.to_csv("%s/%s_ranked_intermediate_grouped.csv" % (TMP_PATH, INPUT_FILE), index=False)
     #create pivot table and fill non existing with high number i.e:100
     pivot = pd.pivot_table(grouped,
                            values='rank',
                            index='Cluster ID',
                            columns=['day'],
-                           fill_value=100,
+                           fill_value=notfound_value,
                            aggfunc=np.sum)
 
     pivot.to_csv("%s/%s_ranked_intermediate_pivot.csv" % (TMP_PATH, INPUT_FILE))

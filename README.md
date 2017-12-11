@@ -41,6 +41,8 @@ python clean_ballot_stuffing.py
 
 3. Transform the csv into a vertical format and remove repeated albums and artists inside the same form response (2017_responses_clean.csv > transform_form_responses.py > 2017_responses_normalized.csv)
 
+_Note: Update the period of the poll prior to running the script so that it only captures full days._
+
 ```
 cd scripts
 python transform_form_responses.py
