@@ -6,10 +6,11 @@ import numpy as np
 
 cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../output')
-INPUT_FILE = '2017_responses_deduped_standard'
+INPUT_FILE = '2017_responses_deduped_all_refine_standard'
 TMP_PATH = os.path.join(cwd, '../output/intermediate')
 OUTPUT_PATH = os.path.join(cwd, '../output')
 OUTPUT_FILE = '2017_responses_top100'
+NOTFOUND_VALUE = 200
 
 
 def rank_entries():
@@ -28,14 +29,14 @@ def rank_entries():
 
     # Find maximum rank value and increase by one to use as a fill_value
     # on the pivot with cluster by day
-    notfound_value = grouped['rank'].max()+1
+    # notfound_value = grouped['rank'].max()+1
     grouped.to_csv("%s/%s_ranked_intermediate_grouped.csv" % (TMP_PATH, INPUT_FILE), index=False)
     #create pivot table and fill non existing with high number i.e:100
     pivot = pd.pivot_table(grouped,
                            values='rank',
                            index='Cluster ID',
                            columns=['day'],
-                           fill_value=notfound_value,
+                           fill_value=NOTFOUND_VALUE,
                            aggfunc=np.sum)
 
     pivot.to_csv("%s/%s_ranked_intermediate_pivot.csv" % (TMP_PATH, INPUT_FILE))
@@ -54,7 +55,7 @@ def rank_entries():
     nodups['rank'] = nodups["agg_ranking"].rank(
         method='dense').astype(int)
 
-    final = nodups[['album', 'artist', 'agg_ranking', 'rank']].head(100)
+    final = nodups[['Cluster ID', 'album', 'artist', 'agg_ranking', 'rank']].head(100)
     # Ouput to csv
     final.to_csv("%s/%s.csv" % (OUTPUT_PATH, OUTPUT_FILE), index=False)
     print 'Done.'

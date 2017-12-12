@@ -10,8 +10,8 @@ cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../data')
 INPUT_FILE = '2017_responses'
 OUTPUT_PATH = os.path.join(cwd, '../output')
-DUPLICATE_TIME_THRESHOLD = 60 * 60
-RANDOM_ORDER_TIME_THRESHOLD = 15 * 60
+DUPLICATE_TIME_THRESHOLD = 4 * 60 * 60
+RANDOM_ORDER_TIME_THRESHOLD = 60 * 60
 
 DUPE_DICT_KEYS = ['Album Title #1', 'Album Title #2', 'Album Title #3',
                   'Album Title #4', 'Album Title #5',

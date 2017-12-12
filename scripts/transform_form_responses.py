@@ -10,8 +10,9 @@ cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../output')
 OUTPUT_PATH = os.path.join(cwd, '../output')
 HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'points']
+MAX_POINTS = 15
 POLL_START_DAY = 4
-POLL_END_DAY = 10
+POLL_END_DAY = 11
 
 
 def run():
@@ -34,10 +35,11 @@ def run():
                 # Use a small cache to remove duplicate
                 # album-artist entries within a form response
                 cache = {}
+                form_rows = []
                 if row[0] != '':
                     timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
                     for i in range(5):
-                        ranking = 5 - i
+                        points = MAX_POINTS - i
                         album = row[(2 * i) + 1]
                         artist = row[(2 * i) + 2]
                         key = '-'.join([album.strip().lower(),
@@ -51,7 +53,7 @@ def run():
                         if (album.strip() != '' and (
                                 timestamp.day >= POLL_START_DAY and
                                 timestamp.day <= POLL_END_DAY)):
-                            rows.append([
+                            form_rows.append([
                                 idx,
                                 timestamp,
                                 timestamp.day,
@@ -59,8 +61,12 @@ def run():
                                                              'ignore'),
                                 artist.decode('utf-8').encode('ascii',
                                                               'ignore'),
-                                ranking
+                                points
                             ])
+                    # Only include albums that have more than one entry
+                    if len(form_rows) > 1:
+                        rows.extend(form_rows)
+
             writer.writerows(rows)
 
 
