@@ -49,7 +49,7 @@ Review the results on OpenRefine.
 
 ![OpenRefine screenshot](screenshot)
 
-[screenshot]: assets/OpenRefine_validation
+[screenshot]: assets/OpenRefine_validation.png
 
 If you make changes inside OpenRefine then you'll need to
 1. Export the modified dataset into a csv file from OpenRefine.
