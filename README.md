@@ -47,6 +47,10 @@ Having done that we are going to use the first of two makefiles to execute our d
 
 Review the results on OpenRefine.
 
+![OpenRefine screenshot](screenshot)
+
+[screenshot]: assets/OpenRefine_validation
+
 If you make changes inside OpenRefine then you'll need to
 1. Export the modified dataset into a csv file from OpenRefine.
 2. Change the `INPUT_DATA_DIR` & `INPUT_FILE` on the `rank.mk` to point to the modified file.
