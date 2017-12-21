@@ -25,6 +25,7 @@ Assumptions
 
 * You are using Python 2.7. (Probably the version that came OSX.)
 * You have [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installed and working.
+* GNU make
 
 
 Installation
@@ -41,9 +42,9 @@ Run Project
 
 * Download the original form responses into `data/2017_responses.csv`
 
-Having done that we are going to use the first of two makefiles to execute our data transformation process.
+Having done that we are going to use the first of two makefiles commandds to execute our data transformation process.
 
-* `make -f clean_dedupe.mk`
+* `make clean_dedupe`
 
 Review the results on OpenRefine.
 
@@ -53,8 +54,12 @@ Review the results on OpenRefine.
 
 If you make changes inside OpenRefine then you'll need to
 1. Export the modified dataset into a csv file from OpenRefine.
-2. Change the `INPUT_DATA_DIR` & `INPUT_FILE` on the `rank.mk` to point to the modified file.
+2. Override the following makefile variables on the command file the `RANK_DATA_DIR` & `RANK_INPUT_FILE`.
 
-* `make -f rank.mk`
+* `make rank RANK_DATA_DIR=output RANK_INPUT_FILE=2017_responses_deduped_refine.csv`
+
+If you did not make any changes on OpenRefine you can proceed with
+* `make rank`
+
 
 The Top100 should be available on `output/2017_responses_top100.csv`
