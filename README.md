@@ -47,7 +47,7 @@ Having done that we are going to use the first of two makefiles to execute our d
 
 Review the results on OpenRefine.
 
-![OpenRefine screenshot](screenshot)
+![OpenRefine screenshot][screenshot]
 
 [screenshot]: assets/OpenRefine_validation.png
 
