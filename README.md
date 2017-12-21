@@ -4,20 +4,28 @@ All Songs Considered - EOY Best Album Poll
 * [What is this?](#what-is-this)
 * [Assumptions](#assumptions)
 * [Installation](#installation)
-* [View analysis notebook](#view-analysis-notebook)
+* [Run project](#run-project)
 
 What is this?
 -------------
 
 A repository for cleaning, processing and ranking the form responses of the All Songs Considered End of Year Best Album Poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
 
+In 2017 we decided we wanted to give `dedupe` a try for our data clustering task, specifically we wanted to use [csvdedude](https://github.com/dedupeio/csvdedupe). This library uses supervised machine learning techniques to detect similar entries and cluster them.
+
+Also we wanted to use makefiles in order to make our data transformation pipeline more compact and reusable.
+
+We have used two makefiles because we wanted to have a manual review checkpoint after `dedupe` has classified our album/artist key pairs into clusters, even though `dedupe` did a fantastic job of identifying the bulk of the similar entries some where misclassified and we used [OpenRefine](http://openrefine.org/) to make small adjustments that impacted our top 100 classification.
+
 This codebase is licensed under the MIT open source license. See the [LICENSE](https://github.com/nprapps/allsongsconsidered-poll/blob/master/LICENSE) file for the complete license.
+
 
 Assumptions
 -----------
 
 * You are using Python 2.7. (Probably the version that came OSX.)
 * You have [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installed and working.
+
 
 Installation
 ------------
@@ -28,51 +36,21 @@ mkvirtualenv allsongsconsidered-poll
 pip install -r requirements.txt
 ```
 
-Steps
+Run Project
 -----
 
-1. Download original form responses into `data/2017_responses.csv`
-2. Check for duplicate entries (2017_responses.csv > `clean_ballot_stuffing.py` > 2017_responses_clean.csv)
+* Download the original form responses into `data/2017_responses.csv`
 
-```
-cd scripts
-python clean_ballot_stuffing.py
-```
+Having done that we are going to use the first of two makefiles to execute our data transformation process.
 
-3. Transform the csv into a vertical format and remove repeated albums and artists inside the same form response (2017_responses_clean.csv > transform_form_responses.py > 2017_responses_normalized.csv)
+* `make -f clean_dedupe.mk`
 
-_Note: Update the period of the poll prior to running the script so that it only captures full days._
+Review the results on OpenRefine.
 
-```
-cd scripts
-python transform_form_responses.py
-```
+If you make changes inside OpenRefine then you'll need to
+1. Export the modified dataset into a csv file from OpenRefine.
+2. Change the `INPUT_DATA_DIR` & `INPUT_FILE` on the `rank.mk` to point to the modified file.
 
-4. Combine like entries using csvdedupe (2017_responses_normalized.csv > dedupe.sh > 2017_responses_deduped.csv)
+* `make -f rank.mk`
 
-```
-cs scripts
-./dedupe.sh
-```
-
-_note: more info on csvdedupe [here](https://github.com/dedupeio/csvdedupe), the training.json file is available inside the scripts folder_
-
-5. Verify output cluster info on OpenRefine at least the clusters with many entries (2017_responses_deduped.csv)
-
-![screenshot OpenRefine][screenshot]
-
-[screenshot]: assets/OpenRefine_validation.png
-
-6. Use the most used album and artist per cluster (2017_responses_deduped.csv > standarize_cluster_responses.py > 2017_responses_deduped_standard.csv)
-
-```
-cd scripts
-python standarize_cluster_responses.py
-```
-
-7. Rank them based on points per day favoring consistent numbers across the poll period. pick the top100 (2017_responses_deduped_standard.csv > ranker.py > 2017_responses_top100.csv)
-
-```
-cd scripts
-python ranker.py
-```
+The Top100 should be available on `output/2017_responses_top100.csv`

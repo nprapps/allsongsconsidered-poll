@@ -5,17 +5,16 @@ import pandas as pd
 import argparse
 
 
-def run(top100, pivot):
+def run(raw, ranked):
 
-    top100 = pd.read_csv(top100)
-    pivot = pd.read_csv(pivot)
+    raw_data = pd.read_csv(raw)
+    ranked = pd.read_csv(ranked)
 
     # merge with original data to bring album and artist
-    merged = top100.merge(pivot, on='Cluster ID', how='left')
+    merged = raw_data.merge(ranked, on='Cluster ID', how='left')
     # Drop duplicates by Cluster ID
-    clean = merged[['Cluster ID','album', 'artist',
-                    '4', '5', '6', '7', '8', '9', '10', '11',
-                    'agg_ranking', 'rank']]
+    clean = merged[['Cluster ID', 'album', 'artist', 'agg_ranking']]
+    clean = clean.drop_duplicates(['Cluster ID'])
     clean.to_csv(sys.stdout, index=False)
 
 

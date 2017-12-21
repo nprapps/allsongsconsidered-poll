@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import csv
+import sys
 import os
 import arrow
 import collections
@@ -35,12 +36,13 @@ def mark_ballot_stuffing_delta(row, i, rows):
     """
     Modifies the list elements in place adding a smelly attribute to each row
     dictionary that is equal to the searched row within a timedelta
-    Added random ordering detection within a smaller time delta defined in RANDOM_ORDER_TIME_THRESHOLD
+    Added random ordering detection within a smaller time delta
+    defined in RANDOM_ORDER_TIME_THRESHOLD
     """
     timestamp = arrow.get(row['Timestamp'], 'M/D/YYYY H:m:s')
     row_data = [v.lower().strip() for k, v in row.iteritems() if k in DUPE_DICT_KEYS]
 
-    while i < (len(rows)-1):
+    while i < (len(rows) - 1):
         i += 1
         next_row = rows[i]
         next_row_data = [v.lower().strip() for k, v in next_row.iteritems() if k in DUPE_DICT_KEYS]
@@ -62,27 +64,21 @@ def run():
     within a time window defined in DUPLICATE_TIME_THRESHOLD
     """
 
-    # Create output files folder if needed
-    if not os.path.exists(OUTPUT_PATH):
-        os.makedirs(OUTPUT_PATH)
-
     rows = []
-    with open('%s/%s.csv' % (INPUT_PATH, INPUT_FILE)) as fi:
-        reader = csv.DictReader(fi)
-        with open('%s/%s_clean.csv' % (OUTPUT_PATH, INPUT_FILE), 'w') as fo:
-            writer = csv.DictWriter(fo, fieldnames=reader.fieldnames)
-            writer.writeheader()
-            rows = list(reader)
-            rows = rows[1:]
-            for idx, row in enumerate(rows):
-                # First of all mark next rows that are identical within time window
-                mark_ballot_stuffing_delta(row, idx, rows)
-                # if this row has been marked as smelly ignore in output otherwise write
-                # to output file
-                try:
-                    row['smelly']
-                except KeyError:
-                    writer.writerow(row)
+    reader = csv.DictReader(sys.stdin)
+    writer = csv.DictWriter(sys.stdout, fieldnames=reader.fieldnames)
+    writer.writeheader()
+    rows = list(reader)
+    rows = rows[1:]
+    for idx, row in enumerate(rows):
+        # First of all mark next rows that are identical within time window
+        mark_ballot_stuffing_delta(row, idx, rows)
+        # if this row has been marked as smelly ignore in output otherwise write
+        # to output file
+        try:
+            row['smelly']
+        except KeyError:
+            writer.writerow(row)
 
 
 if __name__ == '__main__':
