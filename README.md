@@ -40,11 +40,13 @@ pip install -r requirements.txt
 Run Project
 -----
 
-* Download the original form responses into `data/2017_responses.csv`
+* Publish the form responses spreadsheet or a copy of it to leave the form and spreadsheet untouched as a csv. Follow instructions [here](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en)
+
+* Copy the url of the spreadsheet published as a csv we'll need to provide that as a parameter.
 
 Having done that we are going to use the first of two makefiles commandds to execute our data transformation process.
 
-* `make clean_dedupe`
+* `make dedupe CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTdnDO2daqBhCWFPPPwzqwHzZIyNDKS_N9af5QEx7HwgAT-bApIjireeZ_F6KAD30BSe49kWc4Dp7UE/pub?gid=43875107&single=true&output=csv'`
 
 Review the results on OpenRefine.
 
@@ -56,10 +58,10 @@ If you make changes inside OpenRefine then you'll need to
 1. Export the modified dataset into a csv file from OpenRefine.
 2. Override the following makefile variables on the command file the `RANK_DATA_DIR` & `RANK_INPUT_FILE`.
 
-* `make rank RANK_DATA_DIR=output RANK_INPUT_FILE=2017_responses_deduped_refine.csv`
+* `make rank RANK_DATA_DIR=output RANK_INPUT_FILE=allsongs_responses_deduped_refine.csv`
 
 If you did not make any changes on OpenRefine you can proceed with
 * `make rank`
 
 
-The Top100 should be available on `output/2017_responses_top100.csv`
+The Top100 should be available on `output/allsongs_responses_top100.csv`

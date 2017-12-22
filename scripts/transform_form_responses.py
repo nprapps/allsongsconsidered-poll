@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import argparse
 import sys
 import csv
 import os
@@ -9,12 +10,9 @@ import arrow
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
 HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'points']
-MAX_POINTS = 15
-POLL_START_DAY = 4
-POLL_END_DAY = 11
 
 
-def run():
+def run(args):
     """
     Parse allsongsconsidered form results and normalize it to be deduped.
     """
@@ -34,7 +32,7 @@ def run():
         if row[0] != '':
             timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
             for i in range(5):
-                points = MAX_POINTS - i
+                points = args.max_points - i
                 album = row[(2 * i) + 1]
                 artist = row[(2 * i) + 2]
                 key = '-'.join([album.strip().lower(),
@@ -46,8 +44,8 @@ def run():
                     cache[key] = 1
                 # Remove empty albums & adjust poll period
                 if (album.strip() != '' and (
-                        timestamp.day >= POLL_START_DAY and
-                        timestamp.day <= POLL_END_DAY)):
+                        timestamp.day >= args.poll_start_day and
+                        timestamp.day <= args.poll_end_day)):
                     form_rows.append([
                         idx,
                         timestamp,
@@ -66,4 +64,20 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    # Parse command-line arguments.
+    parser = argparse.ArgumentParser(
+        description="Transform Form Responss for csvdedupe")
+    parser.add_argument('--max_points',
+                        type=int,
+                        help="maximum points assigned to first album (>=5)",
+                        required=True)
+    parser.add_argument('--poll_start_day',
+                        type=int,
+                        help="Day where the poll has started",
+                        required=True)
+    parser.add_argument('--poll_end_day',
+                        type=int,
+                        help="Day where the poll has ended",
+                        required=True)
+    args = parser.parse_args()
+    run(args)

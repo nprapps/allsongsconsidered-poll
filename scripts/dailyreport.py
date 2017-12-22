@@ -12,10 +12,12 @@ def run(top100, pivot):
 
     # merge with original data to bring album and artist
     merged = top100.merge(pivot, on='Cluster ID', how='left')
-    # Drop duplicates by Cluster ID
-    clean = merged[['Cluster ID','album', 'artist',
-                    '4', '5', '6', '7', '8', '9', '10', '11',
-                    'agg_ranking', 'rank']]
+
+    # keep pivot columns
+    columns = list(pivot.columns.values)
+    # Add desired columns from top100
+    columns.extend(['album', 'artist', 'agg_ranking', 'rank'])
+    clean = merged[columns]
     clean.to_csv(sys.stdout, index=False)
 
 
