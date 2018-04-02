@@ -13,10 +13,18 @@ INPUT_PATH = os.path.join(cwd, '../data')
 INPUT_FILE = '2017_responses'
 OUTPUT_PATH = os.path.join(cwd, '../output')
 
-DUPE_DICT_KEYS = ['Album Title #1', 'Album Title #2', 'Album Title #3',
-                  'Album Title #4', 'Album Title #5',
+DUPE_DICT_KEYS = ['Album #1', 'Album #2', 'Album #3',
+                  'Album #4', 'Album #5', 'Album #6',
+                  'Album #7', 'Album #8', 'Album #9',
+                  'Album #10',
                   'Artist #1', 'Artist #2', 'Artist #3',
-                  'Artist #4', 'Artist #5']
+                  'Artist #4', 'Artist #5', 'Artist #6',
+                  'Artist #7', 'Artist #8', 'Artist #9',
+                  'Artist #10',
+                  'Notes about this album #1', 'Notes about this album #2', 'Notes about this album #3',
+                  'Notes about this album #4', 'Notes about this album #5', 'Notes about this album #6',
+                  'Notes about this album #7', 'Notes about this album #8', 'Notes about this album #9',
+                  'Notes about this album #10']
 
 
 def find_dupe(row1, row2):
@@ -95,4 +103,3 @@ if __name__ == '__main__':
                         required=True)
     args = parser.parse_args()
     run(args)
-

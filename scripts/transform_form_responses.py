@@ -9,13 +9,16 @@ import arrow
 
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
-HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'points']
+HEADER = ['id', 'timestamp', 'album', 'artist', 'comment', 'points']
 
 
 def run(args):
     """
     Parse allsongsconsidered form results and normalize it to be deduped.
     """
+    # Format date arguments
+    start_timestamp = arrow.get(args.poll_start_date, 'M/D/YYYY')
+    end_timestamp = arrow.get(args.poll_end_date, 'M/D/YYYY')
 
     # Create output files folder if needed
     rows = []
@@ -31,10 +34,11 @@ def run(args):
         form_rows = []
         if row[0] != '':
             timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
-            for i in range(5):
-                points = args.max_points - i
+            for i in range(args.max_submit):
+                points = 1
                 album = row[(2 * i) + 1]
                 artist = row[(2 * i) + 2]
+                comment = row[(2 * i) + 3]
                 key = '-'.join([album.strip().lower(),
                                 artist.strip().lower()])
                 try:
@@ -44,20 +48,21 @@ def run(args):
                     cache[key] = 1
                 # Remove empty albums & adjust poll period
                 if (album.strip() != '' and (
-                        timestamp.day >= args.poll_start_day and
-                        timestamp.day <= args.poll_end_day)):
+                        timestamp >= start_timestamp and
+                        timestamp <= end_timestamp)):
                     form_rows.append([
                         idx,
                         timestamp,
-                        timestamp.day,
                         album.decode('utf-8').encode('ascii',
                                                      'ignore'),
                         artist.decode('utf-8').encode('ascii',
                                                       'ignore'),
+                        comment.decode('utf-8').encode('ascii',
+                                                      'ignore'),
                         points
                     ])
-            # Only include albums that have more than one entry
-            if len(form_rows) > 1:
+            # Only include albums that have at least one entry
+            if len(form_rows) >= 1:
                 rows.extend(form_rows)
 
     writer.writerows(rows)
@@ -66,18 +71,18 @@ def run(args):
 if __name__ == '__main__':
     # Parse command-line arguments.
     parser = argparse.ArgumentParser(
-        description="Transform Form Responss for csvdedupe")
-    parser.add_argument('--max_points',
+        description="Transform Form Responses for csvdedupe")
+    parser.add_argument('--max_submit',
                         type=int,
-                        help="maximum points assigned to first album (>=5)",
+                        help="Max number of items submitted in each response",
                         required=True)
-    parser.add_argument('--poll_start_day',
-                        type=int,
-                        help="Day where the poll has started",
+    parser.add_argument('--poll_start_date',
+                        type=str,
+                        help="Date the poll started formatted as M/D/YYYY",
                         required=True)
-    parser.add_argument('--poll_end_day',
-                        type=int,
-                        help="Day where the poll has ended",
+    parser.add_argument('--poll_end_date',
+                        type=str,
+                        help="Date the poll ended formatted as M/D/YYYY",
                         required=True)
     args = parser.parse_args()
     run(args)

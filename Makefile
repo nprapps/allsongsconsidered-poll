@@ -16,11 +16,11 @@ RANDOM_ORDER_TIME_THRESHOLD=3600
 
 ## transform_form_responses.py configuration
 # Decreased by one for each subsequent album/artist pair
-MAX_POINTS=15
-# 4th December
-POLL_START_DAY=4
-# 11th December
-POLL_END_DAY=11
+MAX_SUBMIT=10
+# March 21, 2018
+POLL_START_DATE='3/21/2018'
+#April 2, 2018
+POLL_END_DATE='4/2/2018' 
 
 ## pivot_cluster_day.py configuration
 # Value to assign to a cluster ID that does not appear on a given day
@@ -45,9 +45,9 @@ $(OUTPUT_DATA_DIR)/allsongs_responses_normalized.csv: $(INPUT_DATA_DIR)/$(INPUT_
 	--duplicate_threshold $(DUPLICATE_TIME_THRESHOLD) \
 	--random_order_threshold $(RANDOM_ORDER_TIME_THRESHOLD) | \
 	./scripts/transform_form_responses.py \
-	--max_points $(MAX_POINTS) \
-	--poll_start_day $(POLL_START_DAY) \
-	--poll_end_day $(POLL_END_DAY) > $@
+	--max_submit $(MAX_SUBMIT) \
+	--poll_start_date $(POLL_START_DATE) \
+	--poll_end_date $(POLL_END_DATE) > $@
 
 $(INPUT_DATA_DIR)/$(INPUT_FILE):
 	curl -o $@ '$(CSV_URL)'
