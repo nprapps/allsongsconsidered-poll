@@ -6,7 +6,7 @@ OUTPUT_DATA_DIR = output
 INTERMEDIATE_DATA_DIR = tmp
 
 # EXAMPLE GOOGLE SPREADSHEET URL PUBLISHED AS A CSV Extract of 2017 data
-CSV_URL=https://docs.google.com/spreadsheets/d/e/2PACX-1vTdnDO2daqBhCWFPPPwzqwHzZIyNDKS_N9af5QEx7HwgAT-bApIjireeZ_F6KAD30BSe49kWc4Dp7UE/pub?gid=43875107&single=true&output=csv
+CSV_URL=https://docs.google.com/spreadsheets/d/e/2PACX-1vSMW2pbk3YWfNWU4C0wHVdMr90oHvyMHrRp_SJlUei6P1bnQDUWKOfBkR2zi3QFefk2GEfv5TTE-vJw/pub?gid=1988637773&single=true&output=csv
 
 ## clean_ballot_stuffing.py configuration
 # 4 hours = 4 * 60 * 60 seconds
@@ -20,7 +20,7 @@ MAX_SUBMIT=10
 # March 21, 2018
 POLL_START_DATE='3/21/2018'
 #April 2, 2018
-POLL_END_DATE='4/2/2018' 
+POLL_END_DATE='4/2/2018'
 
 ## pivot_cluster_day.py configuration
 # Value to assign to a cluster ID that does not appear on a given day

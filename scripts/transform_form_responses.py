@@ -36,9 +36,9 @@ def run(args):
             timestamp = arrow.get(row[0], 'M/D/YYYY H:m:s')
             for i in range(args.max_submit):
                 points = 1
-                album = row[(2 * i) + 1]
-                artist = row[(2 * i) + 2]
-                comment = row[(2 * i) + 3]
+                album = row[(3 * i) + 1]
+                artist = row[(3 * i) + 2]
+                comment = row[(3 * i) + 3]
                 key = '-'.join([album.strip().lower(),
                                 artist.strip().lower()])
                 try:
