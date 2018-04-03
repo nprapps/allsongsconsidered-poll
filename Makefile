@@ -49,7 +49,7 @@ $(OUTPUT_DATA_DIR)/allsongs_responses_normalized.csv: $(INPUT_DATA_DIR)/$(INPUT_
 	--poll_start_date $(POLL_START_DATE) \
 	--poll_end_date $(POLL_END_DATE) > $@
 
-$(INPUT_DATA_DIR)/$(INPUT_FILE):
+$(INPUT_DATA_DIR)/$(INPUT_FILE): $(INPUT_DATA_DIR)
 	curl -o $@ '$(CSV_URL)'
 
 # Rank rules
@@ -79,6 +79,9 @@ $(INTERMEDIATE_DATA_DIR):
 
 $(OUTPUT_DATA_DIR):
 	mkdir -p $(OUTPUT_DATA_DIR)
+
+$(INPUT_DATA_DIR):
+	mkdir -p $(INPUT_DATA_DIR)
 
 clean:
 	rm -rf $(OUTPUT_DATA_DIR)
