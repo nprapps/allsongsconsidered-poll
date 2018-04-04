@@ -6,7 +6,7 @@ OUTPUT_DATA_DIR = output
 INTERMEDIATE_DATA_DIR = tmp
 
 # EXAMPLE GOOGLE SPREADSHEET URL PUBLISHED AS A CSV Extract of 2017 data
-CSV_URL=https://docs.google.com/spreadsheets/d/e/2PACX-1vSMW2pbk3YWfNWU4C0wHVdMr90oHvyMHrRp_SJlUei6P1bnQDUWKOfBkR2zi3QFefk2GEfv5TTE-vJw/pub?gid=1988637773&single=true&output=csv
+CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vSMW2pbk3YWfNWU4C0wHVdMr90oHvyMHrRp_SJlUei6P1bnQDUWKOfBkR2zi3QFefk2GEfv5TTE-vJw/pub?gid=1988637773&single=true&output=csv'
 
 ## clean_ballot_stuffing.py configuration
 # 4 hours = 4 * 60 * 60 seconds
@@ -15,11 +15,10 @@ DUPLICATE_TIME_THRESHOLD=14400
 RANDOM_ORDER_TIME_THRESHOLD=3600
 
 ## transform_form_responses.py configuration
-# Decreased by one for each subsequent album/artist pair
 MAX_SUBMIT=10
-# March 21, 2018
+# Poll opened on March 21, 2018
 POLL_START_DATE='3/21/2018'
-#April 2, 2018
+# Poll closed April 2, 2018
 POLL_END_DATE='4/2/2018'
 
 ## pivot_cluster_day.py configuration
@@ -51,6 +50,7 @@ $(OUTPUT_DATA_DIR)/allsongs_responses_normalized.csv: $(INPUT_DATA_DIR)/$(INPUT_
 
 $(INPUT_DATA_DIR)/$(INPUT_FILE): $(INPUT_DATA_DIR)
 	curl -o $@ '$(CSV_URL)'
+
 
 # Rank rules
 rank: $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv

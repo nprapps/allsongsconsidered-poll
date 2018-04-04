@@ -9,7 +9,7 @@ import arrow
 
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
-HEADER = ['id', 'timestamp', 'album', 'artist', 'comment', 'points']
+HEADER = ['id', 'timestamp', 'day', 'album', 'artist', 'comment', 'points']
 
 
 def run(args):
@@ -18,7 +18,7 @@ def run(args):
     """
     # Format date arguments
     start_timestamp = arrow.get(args.poll_start_date, 'M/D/YYYY')
-    end_timestamp = arrow.get(args.poll_end_date, 'M/D/YYYY')
+    end_timestamp = arrow.get(args.poll_end_date, 'M/D/YYYY').shift(days=1)
 
     # Create output files folder if needed
     rows = []
@@ -53,6 +53,7 @@ def run(args):
                     form_rows.append([
                         idx,
                         timestamp,
+                        timestamp.day,
                         album.decode('utf-8').encode('ascii',
                                                      'ignore'),
                         artist.decode('utf-8').encode('ascii',
