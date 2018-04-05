@@ -27,6 +27,7 @@ def run():
                 cluster[key] = 1
         except KeyError:
             cache[row['Cluster ID']] = {key: 1}
+            
     # Get key with maximum value via https://stackoverflow.com/questions/268272/getting-key-with-maximum-value-in-dictionary
     for cluster in cache:
         standard[cluster] = max(cache[cluster].iteritems(),

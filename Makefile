@@ -24,7 +24,8 @@ POLL_END_DATE='4/2/2018'
 ## pivot_cluster_day.py configuration
 # Value to assign to a cluster ID that does not appear on a given day
 NOTFOUND_VALUE=200
-
+# Value to assign when there are no votes on a given day
+NOVOTES_VALUE=0
 
 
 .PHONY: all clean
@@ -64,10 +65,14 @@ $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allso
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
 
+# Modified to sum points per day instead of calculate a rank per day
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
 	cat $< | ./scripts/rank_cluster_day.py | \
 	./scripts/pivot_cluster_day.py \
-	--notfound_value $(NOTFOUND_VALUE) > $@
+	--notfound_value $(NOTFOUND_VALUE) --novotes_value $(NOVOTES_VALUE) > $@
+
+
+cat output/allsongs_responses_deduped_standard.csv | ./scripts/rank_cluster_day.py | ./scripts/pivot_cluster_day.py > tmp/sum_per_day.csv
 
 $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv: $(RANK_DATA_DIR)/$(RANK_INPUT_FILE) $(OUTPUT_DATA_DIR)
 	cat $< | ./scripts/standarize_cluster_responses.py  > $@

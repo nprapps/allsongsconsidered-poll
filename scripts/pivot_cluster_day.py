@@ -15,10 +15,10 @@ def run(args):
 
     # #create pivot table and fill non existing with high number i.e:200
     pivot = pd.pivot_table(data,
-                           values='rank',
+                           values='points',
                            index='Cluster ID',
                            columns=['day'],
-                           fill_value=args.notfound_value,
+                           fill_value=0,
                            aggfunc=np.sum)
 
     # Write output
@@ -32,6 +32,10 @@ if __name__ == '__main__':
     parser.add_argument('--notfound_value',
                         type=int,
                         help="value to assign to N/A values on pivot table",
-                        required=True)
+                        required=False)
+    parser.add_argument('--novotes_value',
+                        type=int,
+                        help="value to assign to no votes on pivot table",
+                        required=False)
     args = parser.parse_args()
     run(args)
