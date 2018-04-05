@@ -16,7 +16,7 @@ def run(top100, pivot):
     # keep pivot columns
     columns = list(pivot.columns.values)
     # Add desired columns from top100
-    columns.extend(['album', 'artist', 'agg_ranking', 'rank'])
+    columns.extend(['album', 'artist', 'total_points', 'rank'])
     clean = merged[columns]
     clean.to_csv(sys.stdout, index=False)
 
