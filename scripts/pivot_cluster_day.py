@@ -21,6 +21,9 @@ def run(args):
                            fill_value=0,
                            aggfunc=np.sum)
 
+    # TODO: add argument that says which pivot table to do,
+    # either sum by points or value and use the appropriate fill_value to pass
+
     # Write output
     pivot.to_csv(sys.stdout)
 

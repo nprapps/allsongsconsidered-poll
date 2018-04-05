@@ -62,17 +62,22 @@ $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv: $(INTERMEDIATE_DATA_DIR)/allso
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv
 	./scripts/merge_cluster_ranking_album_artist.py $^ | ./scripts/rankall.py > $@
 
+# Modified to sum and output total points
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
 
-# Modified to sum points per day instead of calculate a rank per day
+	# PRINTS:
+	# cat tmp/allsongs_responses_pivotclusterbyday.csv | ./scripts/aggregate_cluster_period.py > tmp/aggclusterperiod.csv
+	# cat tmp/sum_per_day.csv | ./scripts/aggregate_cluster_period.py > tmp/aggclusterperiod.csv
+
+# Modified to sum points per day instead of calculate a rank per day, pivot has a TODO
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
 	cat $< | ./scripts/rank_cluster_day.py | \
 	./scripts/pivot_cluster_day.py \
 	--notfound_value $(NOTFOUND_VALUE) --novotes_value $(NOVOTES_VALUE) > $@
 
-
-cat output/allsongs_responses_deduped_standard.csv | ./scripts/rank_cluster_day.py | ./scripts/pivot_cluster_day.py > tmp/sum_per_day.csv
+	# PRINTS:
+	# cat output/allsongs_responses_deduped_standard.csv | ./scripts/rank_cluster_day.py | ./scripts/pivot_cluster_day.py > tmp/sum_per_day.csv
 
 $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv: $(RANK_DATA_DIR)/$(RANK_INPUT_FILE) $(OUTPUT_DATA_DIR)
 	cat $< | ./scripts/standarize_cluster_responses.py  > $@
