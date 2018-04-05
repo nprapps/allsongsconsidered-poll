@@ -62,6 +62,10 @@ $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv: $(INTERMEDIATE_DATA_DIR)/allso
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv
 	./scripts/merge_cluster_ranking_album_artist.py $^ | ./scripts/rankall.py > $@
 
+# PRINTS:
+# ./scripts/merge_cluster_ranking_album_artist.py output/allsongs_responses_deduped_standard.csv tmp/allsongs_responses_aggclusterperiod.csv | ./scripts/rankall.py > tmp/allsongs_responses_ranked.csv
+# ./scripts/merge_cluster_ranking_album_artist.py output/allsongs_responses_deduped_standard.csv tmp/aggclusterperiod.csv | ./scripts/rankall.py > tmp/ranked.csv
+
 # Modified to sum and output total points
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
