@@ -11,21 +11,30 @@ def run(args):
 
     # Find maximum rank value and increase by one to use as a fill_value
     # on the pivot with cluster by day
-    # notfound_value = grouped['rank'].max()+1
+    notfound_value = 200
+    # grouped['rank'].max()+1
 
     # #create pivot table and fill non existing with high number i.e:200
-    pivot = pd.pivot_table(data,
-                           values='points',
+    pivot_rank = pd.pivot_table(data,
+                           values='rank',
                            index='Cluster ID',
                            columns=['day'],
-                           fill_value=0,
+                           fill_value=notfound_value,
                            aggfunc=np.sum)
+
+    pivot_points = pd.pivot_table(data,
+                                  values='points',
+                                  index='Cluster ID',
+                                  columns=['day'],
+                                  fill_value=0,
+                                  aggfunc=np.sum)
+
 
     # TODO: add argument that says which pivot table to do,
     # either sum by points or value and use the appropriate fill_value to pass
 
     # Write output
-    pivot.to_csv(sys.stdout)
+    pivot_rank.to_csv(sys.stdout)
 
 
 if __name__ == '__main__':

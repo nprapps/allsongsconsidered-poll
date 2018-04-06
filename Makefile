@@ -68,15 +68,11 @@ $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allso
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
 
-# Take sum of points per day and divide to normalize
-$(INTERMEDIATE_DATA_DIR)/allsongs_responses_shareperday.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
-	cat $< | ./scripts/share_per_day.py > $@
-
 # Modified to sum points per day instead of calculate a rank per day, pivot has a TODO
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
 	cat $< | ./scripts/rank_cluster_day.py | \
 	./scripts/pivot_cluster_day.py \
-	--notfound_value $(NOTFOUND_VALUE) --novotes_value $(NOVOTES_VALUE) > $@
+	--notfound_value $(NOTFOUND_VALUE) > $@
 
 $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv: $(RANK_DATA_DIR)/$(RANK_INPUT_FILE) $(OUTPUT_DATA_DIR)
 	cat $< | ./scripts/standarize_cluster_responses.py  > $@

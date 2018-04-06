@@ -9,14 +9,14 @@ import pandas as pd
 def run():
     data = pd.read_csv(sys.stdin, index_col=['Cluster ID'])
     # Aggregate the points per day for all the poll period and sort
-    agg = data.sum(axis=1).sort_values(ascending=False)
+    agg = data.sum(axis=1).sort_values(ascending=True)
 
     # Series to Dataframe to assign column name
     ranked = pd.DataFrame(agg, columns=['agg_ranking'])
     total = pd.DataFrame(agg, columns=['total_points'])
 
     # Write output
-    total.to_csv(sys.stdout, index_label='Cluster ID')
+    ranked.to_csv(sys.stdout, index_label='Cluster ID')
 
 
 if __name__ == '__main__':

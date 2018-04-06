@@ -14,8 +14,8 @@ def run(raw, ranked):
     # merge with original data to bring album and artist
     merged = raw_data.merge(ranked, on='Cluster ID', how='left')
     # Drop duplicates by Cluster ID
-    # clean = merged[['Cluster ID', 'album', 'artist', 'agg_ranking']]
-    clean = merged[['Cluster ID', 'album', 'artist', 'total_points']]
+    clean = merged[['Cluster ID', 'album', 'artist', 'agg_ranking']]
+    # clean = merged[['Cluster ID', 'album', 'artist', 'total_points']]
     clean = clean.drop_duplicates(['Cluster ID'])
     clean.to_csv(sys.stdout, index=False)
 
