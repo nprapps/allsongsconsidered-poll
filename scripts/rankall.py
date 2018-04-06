@@ -28,7 +28,7 @@ def run():
     data['rank_norm'] = data['agg_ranking_norm'].rank(
         method='dense').astype(int)
 
-    output = data[['Cluster ID','album','artist','total_points', 'rank_points','agg_ranking','rank','agg_ranking_norm','rank_norm']]
+    output = data[['Cluster ID','album','artist','total_points','agg_ranking','rank','agg_ranking_norm','rank_norm']]
 
     output.to_csv(sys.stdout, index=False)
 

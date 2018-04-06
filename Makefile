@@ -28,7 +28,7 @@ NOTFOUND_VALUE=200
 NOVOTES_VALUE=0
 
 # ranked output configuration
-RANKED_OUTPUT_NUM=101
+RANKED_OUTPUT_NUM=201
 
 .PHONY: all clean
 
