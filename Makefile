@@ -61,7 +61,7 @@ rank: $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv
 $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv
 	cat $< | head -n $(RANKED_OUTPUT_NUM) > $@
 
-$(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_drophighlow.csv
 	./scripts/merge_cluster_ranking_album_artist.py $^ | ./scripts/rankall.py > $@
 
 # Modified to sum and output total points
@@ -72,6 +72,10 @@ $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv: $(INTERMEDI
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
 	cat $< | ./scripts/rank_cluster_day.py | \
 	./scripts/sum_pivot_cluster_day.py > $@
+
+# Drop high and low ranking
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_drophighlow.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
+	cat $< | ./scripts/drop_high_low.py > $@
 
 # Modified to sum and output total points
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv

@@ -11,13 +11,15 @@ def run():
 
     # Sort by aggregated ranking
     data.sort_values('agg_ranking', inplace=True)
-    # data.sort_values('total_points', inplace=True, ascending=False)
 
-    # create final ranking
-    data['rank'] = data["agg_ranking"].rank(
+    # create first ranking
+    data['rank'] = data['agg_ranking'].rank(
         method='dense').astype(int)
-    # data['rank'] = data["total_points"].rank(
-        # method='dense').astype(int)
+
+    data.sort_values('agg_ranking_norm', inplace=True)
+
+    data['rank_norm'] = data['agg_ranking_norm'].rank(
+        method='dense').astype(int)
 
     data.to_csv(sys.stdout, index=False)
 
