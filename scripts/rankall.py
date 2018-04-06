@@ -9,6 +9,13 @@ def run():
 
     data = pd.read_csv(sys.stdin)
 
+    # Sort by points
+    data.sort_values('total_points', inplace=True, ascending=False)
+
+    # create first ranking
+    data['rank_points'] = data['total_points'].rank(
+        method='dense').astype(int)
+
     # Sort by aggregated ranking
     data.sort_values('agg_ranking', inplace=True)
 
@@ -21,7 +28,9 @@ def run():
     data['rank_norm'] = data['agg_ranking_norm'].rank(
         method='dense').astype(int)
 
-    data.to_csv(sys.stdout, index=False)
+    output = data[['Cluster ID','album','artist','total_points', 'rank_points','agg_ranking','rank','agg_ranking_norm','rank_norm']]
+
+    output.to_csv(sys.stdout, index=False)
 
 
 if __name__ == '__main__':
