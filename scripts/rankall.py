@@ -9,12 +9,12 @@ def run():
 
     data = pd.read_csv(sys.stdin)
 
-    # Sort by points
-    data.sort_values('total_points', inplace=True, ascending=False)
-
-    # create first ranking
-    data['rank_points'] = data['total_points'].rank(
-        method='dense').astype(int)
+    # # Sort by points
+    # data.sort_values('total_points', inplace=True, ascending=False)
+    #
+    # # create first ranking
+    # data['rank_points'] = data['total_points'].rank(
+    #     method='first').astype(int)
 
     # Sort by aggregated ranking
     data.sort_values('agg_ranking', inplace=True)
