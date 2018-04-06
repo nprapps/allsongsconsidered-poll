@@ -61,14 +61,23 @@ rank: $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv
 $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv
 	cat $< | head -n $(RANKED_OUTPUT_NUM) > $@
 
-$(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv
 	./scripts/merge_cluster_ranking_album_artist.py $^ | ./scripts/rankall.py > $@
+
+# Modified to sum and output total points
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterbyday.csv
+	cat $< | ./scripts/summed_cluster_period.py > $@
+
+# Sum points per day
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
+	cat $< | ./scripts/rank_cluster_day.py | \
+	./scripts/sum_pivot_cluster_day.py > $@
 
 # Modified to sum and output total points
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
 
-# Modified to sum points per day instead of calculate a rank per day, pivot has a TODO
+# Calculate a rank per day, pivot has a TODO
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)
 	cat $< | ./scripts/rank_cluster_day.py | \
 	./scripts/pivot_cluster_day.py \
