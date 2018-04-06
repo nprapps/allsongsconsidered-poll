@@ -65,8 +65,12 @@ $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allso
 	./scripts/merge_cluster_ranking_album_artist.py $^ | ./scripts/rankall.py > $@
 
 # Modified to sum and output total points
-$(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_clipoutliers.csv
 	cat $< | ./scripts/aggregate_cluster_period.py > $@
+
+# Truncate outliers by clipping them to the 95th percentile
+$(INTERMEDIATE_DATA_DIR)/allsongs_responses_clipoutliers.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_shareperday.csv
+	cat $< | ./scripts/clip_outliers.py > $@
 
 # Take sum of points per day and divide to normalize
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_shareperday.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_pivotclusterbyday.csv
