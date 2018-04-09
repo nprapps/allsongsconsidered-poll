@@ -1,10 +1,11 @@
-All Songs Considered - EOY Best Album Poll
-==========================================
+All Songs Considered - Turning the Tables Poll
+==============================================
 
 * [What is this?](#what-is-this)
 * [Assumptions](#assumptions)
+* [What's in here?](#whats-in-here)
 * [Installation](#installation)
-* [Run project](#run-project)
+* [Running the project](#running-the-project)
 
 What is this?
 -------------
@@ -44,7 +45,7 @@ mkvirtualenv allsongsconsidered-poll
 pip install -r requirements.txt
 ```
 
-Running the Project
+Running the project
 -------------------
 
 This project uses `make` to run all the scripts. The first make command takes a `CSV_URL` from a published Google form responses spreadsheet. To publish a spreadsheet, follow [these instructions](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en).
