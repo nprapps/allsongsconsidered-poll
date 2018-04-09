@@ -3,4 +3,6 @@ learned_settings
 output
 tmp
 data/*.csv
-
+allsongs_responses_deduped_refine.csv
+open-refine/*.csv
+messy-make.md

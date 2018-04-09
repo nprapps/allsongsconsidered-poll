@@ -56,9 +56,9 @@ $(INPUT_DATA_DIR)/$(INPUT_FILE): $(INPUT_DATA_DIR)
 
 
 # Rank rules
-rank: $(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv
+rank: $(OUTPUT_DATA_DIR)/allsongs_responses_top200.csv
 
-$(OUTPUT_DATA_DIR)/allsongs_responses_top100.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv
+$(OUTPUT_DATA_DIR)/allsongs_responses_top200.csv: $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv
 	cat $< | head -n $(RANKED_OUTPUT_NUM) > $@
 
 $(INTERMEDIATE_DATA_DIR)/allsongs_responses_ranked.csv: $(OUTPUT_DATA_DIR)/allsongs_responses_deduped_standard.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_aggclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_summedclusterperiod.csv $(INTERMEDIATE_DATA_DIR)/allsongs_responses_drophighlow.csv
