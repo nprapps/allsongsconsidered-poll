@@ -10,7 +10,9 @@ All Songs Considered - Turning the Tables Poll
 What is this?
 -------------
 
-A repository for cleaning, processing and ranking the form responses of the NPR Music Turning the Tables poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
+A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music Turning the Tables poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
+
+There are two versions of this codebase. The major difference is that the [`master`](https://github.com/nprapps/allsongsconsidered-poll) branch includes weighting of albums, while the [`turning-tables`](https://github.com/nprapps/allsongsconsidered-poll/tree/turning-tables) branch does not.
 
 In order to cluster the data, we used `dedupe`. We chose the library [csvdedupe](https://github.com/dedupeio/csvdedupe) because it uses supervised machine learning techniques to detect similar entries and cluster them.
 
@@ -90,4 +92,4 @@ If you did not make any changes in OpenRefine, you can run:
 make rank
 ```
 
-The top 200 will output to `output/allsongs_responses_top100.csv`. To change the number of albums output, you can modify the `RANKED_OUTPUT_NUM` variable.
+The top 200 will output to `output/allsongs_responses_top200.csv`. To change the number of albums output, you can modify the `RANKED_OUTPUT_NUM` variable.
