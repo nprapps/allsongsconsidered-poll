@@ -10,7 +10,7 @@ All Songs Considered - Turning the Tables Poll
 What is this?
 -------------
 
-A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music Turning the Tables poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
+A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music Turning the Tables poll. This code is inspired by the work from the [2016 music poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html), and there is an [updated blog post](http://blog.apps.npr.org/2018/01/03/all-songs-considered-poll.html) for changes to the 2017 music poll.
 
 There are two versions of this codebase. The major difference is that the [`master`](https://github.com/nprapps/allsongsconsidered-poll) branch includes weighting of albums, while the [`turning-tables`](https://github.com/nprapps/allsongsconsidered-poll/tree/turning-tables) branch does not.
 
@@ -51,6 +51,8 @@ Running the project
 -------------------
 
 This project uses `make` to run all the scripts. The first make command takes a `CSV_URL` from a published Google form responses spreadsheet. To publish a spreadsheet, follow [these instructions](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en).
+
+*NOTE:* The spreadsheet headers will have to match `DUPE_DICT_KEYS` in the [`clean_ballot_stuffing`](/scripts/clean_ballot_stuffing.py#L16-L27) script. 
 
 To start the `dedupe` command, run:
 
