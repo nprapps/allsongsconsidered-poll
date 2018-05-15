@@ -42,7 +42,7 @@ Run Project
 
 * Publish the form responses spreadsheet or a copy of it to leave the form and spreadsheet as a csv. Follow instructions [here](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en)
 
-*NOTE:* The spreadsheet headers will have to match `DUPE_DICT_KEYS` in the [`clean_ballot_stuffing`](/scripts/clean_ballot_stuffing.py) script. 
+*NOTE:* The spreadsheet headers will have to match `DUPE_DICT_KEYS` in the [`clean_ballot_stuffing`](/scripts/clean_ballot_stuffing.py#L16-L19) script. 
 
 * Copy the url of the spreadsheet published as a csv we'll need to provide that as a parameter.
 
