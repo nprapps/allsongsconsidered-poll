@@ -9,15 +9,15 @@ All Songs Considered - EOY Best Album Poll
 What is this?
 -------------
 
-A repository for cleaning, processing and ranking the form responses of the All Songs Considered End of Year Best Album Poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
+A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music End of Year Music poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
 
-In 2017 we decided we wanted to give `dedupe` a try for our data clustering task, specifically we wanted to use [csvdedude](https://github.com/dedupeio/csvdedupe). This library uses supervised machine learning techniques to detect similar entries and cluster them.
+There are two versions of this codebase. The major difference is that the [`master`](https://github.com/nprapps/allsongsconsidered-poll) branch includes weighting of albums, while the [`turning-tables`](https://github.com/nprapps/allsongsconsidered-poll/tree/turning-tables) branch does not.
 
-Also we wanted to use makefiles in order to make our data transformation pipeline more compact and reusable.
+In order to cluster the data, we used `dedupe`. We chose the library [csvdedupe](https://github.com/dedupeio/csvdedupe) because it uses supervised machine learning techniques to detect similar entries and cluster them.
 
-We have used two makefiles because we wanted to have a manual review checkpoint after `dedupe` has classified our album/artist key pairs into clusters, even though `dedupe` did a fantastic job of identifying the bulk of the similar entries some where misclassified and we used [OpenRefine](http://openrefine.org/) to make small adjustments that impacted our top 100 classification.
+To make our data transformation pipeline more compact and reusable, we used `GNU Make`. We have one central [`Makefile`](Makefile) with two main actions: `dedupe` and `rank`. We separated the processes to allow for a manual review checkpoint after using `csvdedupe` to cluster album/artist key pairs. We found that it's best to check before ranking because of oddities in the user-submitted data like inputting an artist in the album spot and vice versa. These misclassifications impacted our top 150 classification, so we added an extra step to ensure accuracy using [OpenRefine](http://openrefine.org/) to make small adjustments.
 
-This codebase is licensed under the MIT open source license. See the [LICENSE](https://github.com/nprapps/allsongsconsidered-poll/blob/master/LICENSE) file for the complete license.
+This codebase is licensed under the MIT open source license. See the [LICENSE](LICENSE) file for the complete license.
 
 
 Assumptions
