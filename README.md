@@ -9,7 +9,7 @@ All Songs Considered - EOY Best Album Poll
 What is this?
 -------------
 
-A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music End of Year Music poll. This code is inspired on the work from the [2016 poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html).
+A repository for cleaning, processing, weighting and ranking the form responses of the NPR Music End of Year Music poll. This code is inspired by the work from the [2016 music poll blog post](http://blog.apps.npr.org/2016/12/16/all-songs-considered-poll.html), and there is an [updated blog post](http://blog.apps.npr.org/2018/01/03/all-songs-considered-poll.html) for changes to the 2017 music poll.
 
 There are two versions of this codebase. The major difference is that the [`master`](https://github.com/nprapps/allsongsconsidered-poll) branch includes weighting of albums, while the [`turning-tables`](https://github.com/nprapps/allsongsconsidered-poll/tree/turning-tables) branch does not.
 
@@ -40,7 +40,9 @@ pip install -r requirements.txt
 Run Project
 -----
 
-* Publish the form responses spreadsheet or a copy of it to leave the form and spreadsheet untouched as a csv. Follow instructions [here](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en)
+* Publish the form responses spreadsheet or a copy of it to leave the form and spreadsheet as a csv. Follow instructions [here](https://support.google.com/docs/answer/37579?co=GENIE.Platform%3DDesktop&hl=en)
+
+*NOTE:* The spreadsheet headers will have to match `DUPE_DICT_KEYS` in the [`clean_ballot_stuffing`](/scripts/clean_ballot_stuffing.py) script. 
 
 * Copy the url of the spreadsheet published as a csv we'll need to provide that as a parameter.
 
@@ -64,4 +66,4 @@ If you did not make any changes on OpenRefine you can proceed with
 * `make rank`
 
 
-The Top100 should be available on `output/allsongs_responses_top100.csv`
+The Top 100 should be available on `output/allsongs_responses_top100.csv`
